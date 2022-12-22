@@ -11,8 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect( () => {
-      const user = localStorage.getItem("user")
-      if(user === "true")
+      const status = localStorage.getItem("status")
+      if(status === "true")
         navigate("/Home");
   }, [navigate])
 
@@ -29,9 +29,14 @@ const Login = () => {
         
         if(response.data.code === -1)
             alert("User not found")
-        else{
-            localStorage.setItem("user", "true");
-            localStorage.setItem("data", JSON.stringify(response.data.user));
+        else if (response.data.code === -3)
+            alert("something went wrong please try after some time")
+        else
+        {            
+            localStorage.setItem("status", "true");
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            localStorage.setItem("token", response.data.token);
+
             navigate("/Home");
         }
       }

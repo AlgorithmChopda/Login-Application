@@ -34,7 +34,6 @@ const Signup = () => {
           
         else if(response.data.code === -3)
             alert("something went wrong please try after some time")
-
         else    
             alert("Account Created");
       }

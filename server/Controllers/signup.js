@@ -15,7 +15,7 @@ const signup = async (req, res) => {
         
     }
     catch(exception){
-        return res.status(200).json({code: status.SOME_THING_WENT_WRONG})
+        return res.status(500)
     }
     
     

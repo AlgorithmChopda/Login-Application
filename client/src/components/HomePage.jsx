@@ -9,12 +9,12 @@ const HomePage = () => {
 
   const navigate = useNavigate();  
   useEffect( () => {
-      const user = localStorage.getItem("user");
-      if(user === null || user === undefined || user === "false")
+      const status = localStorage.getItem("status");
+      if(status === null || status === undefined || status === "false")
         navigate("/");
   }, [navigate])
 
-  const state = JSON.parse(localStorage.getItem("data"));
+  const state = JSON.parse(localStorage.getItem("user"));
   if(state === undefined)
     navigate("/");
 
@@ -34,6 +34,7 @@ const HomePage = () => {
     setChange(false);
   }
   
+
   const handleSubmit = async () => {
 
     if(name_change === "" || pass_change === ""){
@@ -48,21 +49,31 @@ const HomePage = () => {
       pass: pass_change
     }
 
-    console.log(data);
     const res = await api.CHANGE(data);
+  
     if(res.data.code === 0){
         alert("data changed successfully");
         setName(name_change);
         setPass(pass_change);
         setChange(false);
+
+        localStorage.setItem("user", JSON.stringify(res.data.user));
     }
+    else if (res.data.code === -3){
+      alert("Authentication Failed (token value didn't matched)... please try logging in again.")
+      handleLogout();
+    }
+    
     else  
         alert("Something went wrong please try again later");
       
   }
 
   const handleLogout = () => {
-    localStorage.setItem("user", "false");
+    localStorage.removeItem("status");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
     navigate("/");
   }
 
